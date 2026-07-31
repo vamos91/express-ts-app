@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    // Version de JavaScript que TypeScript doit produire après compilation
+    "target": "ES2022",
+
+    // Type de module utilisé dans le code compilé (import/export)
+    "module": "NodeNext",
+
+    // Manière dont TypeScript résout les modules (utile pour importer des fichiers)
+    "moduleResolution": "NodeNext",
+
+    // Permet l’interopérabilité avec les modules CommonJS (require/export)
+    "esModuleInterop": true,
+
+    // Autorise l’importation de modules sans "default" explicite
+    "allowSyntheticDefaultImports": true,
+
+    // Active les vérifications strictes : plus de sécurité, moins d’erreurs
+    "strict": true,
+
+    // Ignore la vérification des fichiers .d.ts (utile pour éviter des erreurs externes)
+    "skipLibCheck": true,
+
+    // Dossier de sortie des fichiers compilés
+    "outDir": "dist",
+
+    // Dossier source contenant ton code TypeScript
+    "rootDir": "src",
+
+    // Permet d’importer des fichiers JSON comme des modules
+    "resolveJsonModule": true
+  },
+
+  // Indique à TypeScript quels fichiers inclure dans la compilation
+  "include": ["src"]
+}
