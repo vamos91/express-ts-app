@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import jsonwebtoken from "jsonwebtoken";
-import { user } from "../database/user.js";
+import { prisma } from "../lib/prisma.js";
 
 export const signin = (request: Request, response: Response) => {
-  console.log("user infos", request.body);
   const token = jsonwebtoken.sign(
     {
       data: request.body.email + "-" + request.body.role,
@@ -11,9 +10,7 @@ export const signin = (request: Request, response: Response) => {
     "secret",
     { expiresIn: "1h" },
   );
-  console.log("token:", token);
   if (token) {
-    //response.json({ message: token });
     response
       .status(200)
       .cookie("accessToken", token)
@@ -21,8 +18,22 @@ export const signin = (request: Request, response: Response) => {
   }
 };
 
-export const signup = (request: Request, response: Response) => {
+export const signup = async (request: Request, response: Response) => {
   console.log(request.body);
-  user.push(request.body);
-  response.json({ message: user });
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: request.body.email,
+        password: request.body.password,
+        role: "basic",
+        isValidated: false,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    });
+    response.status(201).json({ user: user });
+  } catch (error) {
+    console.log("error:", error);
+    response.status(500);
+  }
 };

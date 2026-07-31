@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model playlist {
+  id                 Int                  @id @default(autoincrement())
+  title              String               @db.VarChar(30)
+  description        String               @db.Text
+  is_public          Boolean
+  user_id            Int
+  created_at         DateTime             @db.Date
+  updated_at         DateTime             @db.Date
+  user               user                 @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "playlist_user_id_foreign")
+  playlist_has_track playlist_has_track[]
+
+  @@index([user_id], map: "playlist_user_id_foreign")
+}
+
+model playlist_has_track {
+  playlist_id Int
+  track_id    Int
+  playlist    playlist @relation(fields: [playlist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "playlist_has_track_playlist_id_foreign")
+  track       track    @relation(fields: [track_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "playlist_has_track_track_id_foreign")
+
+  @@id([playlist_id, track_id])
+  @@index([playlist_id], map: "playlist_has_track_playlist_id_foreign")
+  @@index([track_id], map: "playlist_has_track_track_id_foreign")
+}
+
+model track {
+  id                 Int                  @id @default(autoincrement())
+  title              String               @db.VarChar(30)
+  duration           Int
+  created_at         DateTime             @db.Date
+  updated_at         DateTime             @db.Date
+  playlist_has_track playlist_has_track[]
+}
+
+model user {
+  id          Int        @id @default(autoincrement())
+  email       String     @db.VarChar(50)
+  password    String     @db.VarChar(255)
+  role        user_role
+  isValidated Boolean
+  created_at  DateTime   @db.Date
+  updated_at  DateTime   @db.Date
+  playlist    playlist[]
+}
+
+enum user_role {
+  basic
+  premium
+  admin
+}

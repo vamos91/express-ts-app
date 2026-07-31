@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { prisma } from "../lib/prisma.js";
 
 export const checkCredentialsExist = (
   request: Request,
@@ -13,8 +14,19 @@ export const checkCredentialsExist = (
   }
 };
 
-export const checkUserNotExist = (
+export const checkUserNotExist = async (
   request: Request,
   response: Response,
   next: any,
-) => {};
+) => {
+  const user = await prisma.user.findFirst({
+    where: {
+      email: request.body.email,
+    },
+  });
+  if (user) {
+    next();
+  } else {
+    response.status(400).json({ message: "User not exist" });
+  }
+};

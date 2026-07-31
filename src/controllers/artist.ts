@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import { data } from "../database/data.js";
 import { IArtist } from "../types/artistInterface.js";
+import { prisma } from "../lib/prisma.js"; //const prisma = new PrismaClient();
 
-export const index = (request: Request, response: Response) => {
-  response.json({ message: data });
+export const index = async (request: Request, response: Response) => {
+  const user = await prisma.user.findMany();
+  console.log("user:", user);
+  response.json({ message: user });
 };
 
 export const readOneArtist = (request: Request, response: Response) => {
