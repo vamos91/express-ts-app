@@ -16,14 +16,22 @@ if (!DATABASE_HOST || !DATABASE_USER || !DATABASE_PASSWORD || !DATABASE_NAME) {
   );
 }
 
-const adapter = new PrismaMariaDb({
-  host: DATABASE_HOST,
-  port: Number(DATABASE_PORT ?? 3306),
-  user: DATABASE_USER,
-  password: DATABASE_PASSWORD,
-  database: DATABASE_NAME,
-  connectionLimit: 5,
-});
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("La variable DATABASE_URL est absente");
+}
+
+const adapter = new PrismaMariaDb(databaseUrl);
+
+// const adapter = new PrismaMariaDb({
+//   host: DATABASE_HOST,
+//   port: Number(DATABASE_PORT ?? 3306),
+//   user: DATABASE_USER,
+//   password: DATABASE_PASSWORD,
+//   database: DATABASE_NAME,
+//   connectionLimit: 5,
+// });
 
 export const prisma = new PrismaClient({
   adapter,
