@@ -5,7 +5,7 @@ import { prisma } from "../lib/prisma.js";
 export const signin = (request: Request, response: Response) => {
   const token = jsonwebtoken.sign(
     {
-      data: request.body.email + "-" + request.body.role,
+      data: request.body.email,
     },
     "secret",
     { expiresIn: "1h" },
