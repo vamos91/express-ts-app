@@ -5,10 +5,12 @@ import router from "./routes/routes.js";
 import userRouter from "./routes/user.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import playlistRouter from "./routes/playlist.js";
 
 app.use(express.json());
 app.use(cors());
 
+app.use("/api/playlists", playlistRouter);
 app.use("/api", router);
 app.use("/api/auth", userRouter);
 app.use(cookieParser());
