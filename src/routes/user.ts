@@ -1,6 +1,7 @@
 import express from "express";
 import { signin, signup } from "../controllers/userController.js";
 const userRouter = express.Router();
+
 import {
   checkCredentialsExist,
   checkUserNotExist,
