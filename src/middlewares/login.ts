@@ -6,7 +6,7 @@ export const checkCredentialsExist = (
   response: Response,
   next: any,
 ) => {
-  console.log(request.body.email === undefined);
+  console.log(request.body);
   if (request.body.email === undefined || request.body.password === undefined) {
     response.status(401).json({ message: "Credentials missing" });
   } else {

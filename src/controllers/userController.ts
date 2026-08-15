@@ -14,7 +14,7 @@ export const signin = (request: Request, response: Response) => {
     response
       .status(200)
       .cookie("accessToken", token)
-      .json({ message: "you are connected" });
+      .json({ message: "you are connected", status: "connected" });
   }
 };
 
